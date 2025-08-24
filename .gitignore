@@ -1,6 +1,6 @@
 data/*
 !data/.gitkeep
 
-models/*
-!models/.gitkeep
+model/*
+!model/.gitkeep
 
