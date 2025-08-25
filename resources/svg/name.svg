@@ -1,0 +1,59 @@
+<svg width="450" height="180" viewBox="0 0 450 180" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    /* 彩虹渐变流动 */
+    @keyframes rainbowShift {
+      0% { stop-color: #ff0000; }
+      20% { stop-color: #ff7f00; }
+      40% { stop-color: #ffff00; }
+      60% { stop-color: #00ff00; }
+      80% { stop-color: #0000ff; }
+      100% { stop-color: #8b00ff; }
+    }
+
+    /* 霓虹闪烁 */
+    @keyframes flicker {
+      0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+        opacity: 1;
+        text-shadow: 0 0 5px #fff,
+                     0 0 10px #fff,
+                     0 0 20px #ff00de,
+                     0 0 40px #ff00de,
+                     0 0 80px #ff00de;
+      }
+      20%, 24%, 55% {
+        opacity: 0.6;
+        text-shadow: none;
+      }
+    }
+
+    /* 上下浮动 */
+    @keyframes wave {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    text {
+      font-family: 'Arial Black', sans-serif;
+      font-size: 90px;
+      fill: url(#rainbow);
+      stroke: #ffffff;
+      stroke-width: 2px;
+      animation: wave 2.5s infinite ease-in-out alternate, flicker 3s infinite;
+    }
+  </style>
+
+  <defs>
+    <!-- 动态彩虹渐变 -->
+    <linearGradient id="rainbow" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%">
+        <animate attributeName="stop-color" values="#ff0000;#ff7f00;#ffff00;#00ff00;#0000ff;#8b00ff;#ff0000" dur="6s" repeatCount="indefinite"/>
+      </stop>
+      <stop offset="100%">
+        <animate attributeName="stop-color" values="#8b00ff;#0000ff;#00ff00;#ffff00;#ff7f00;#ff0000;#8b00ff" dur="6s" repeatCount="indefinite"/>
+      </stop>
+    </linearGradient>
+  </defs>
+
+  <!-- 文字 -->
+  <text x="40" y="110">CYYY</text>
+</svg>
