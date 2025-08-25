@@ -80,8 +80,6 @@ def loop_result(tool, device: str, prompt: str, word_limit: int = 800, results =
         if next_txt.strip() in {"<|eot_id|>", "<|endoftext|>", "</s>"}:
             break
 
-        # 先把 token 接上
-        prompt += next_txt
         # generated += next_txt
 
         enc = tool.tokenizer(prompt, return_tensors="pt")
@@ -96,6 +94,7 @@ def loop_result(tool, device: str, prompt: str, word_limit: int = 800, results =
         contrib_mats = tool._contrib_matrices(attn_res_blocks, attn_after_blocks)
         result = tool._accumulate_last_token(contrib_mats, seq_len)
         result_init_tokens_contrib = result[:seq_len_init]
+        prompt += next_txt
         # token_contrib_pairs = [init_tokens, result_init_tokens]
         score_list.append(result_init_tokens_contrib)
     results.append(score_list)
@@ -146,7 +145,7 @@ def main():
     print(f"{results_loop}\n")
     print(f"Final Prompt: {Prompt}\n")
     if args.save_json:
-        with open(f'/home/YiChen/uq/dev_fig/fig_statistic/llama_token_contributions_{args.metric}_loop_5.json', 'w') as f:
+        with open(f'/home/YiChen/uq/dev_fig/fig_statistic/llama_token_contributions_{args.metric}_loop.json', 'w') as f:
             json.dump(results_loop, f, indent=2)
         print(f"\nSaved to: {args.save_json}")
 
