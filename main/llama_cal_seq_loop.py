@@ -5,63 +5,6 @@ import torch
 from model_.llama import LlamaAttributor, AttrConfig
 from datasets import load_dataset
 from tqdm import tqdm
-
-import re
-
-STOP_PUNCTS = {".", "!", "?"}
-
-def _extract_answer_span(text: str) -> str:
-    # 取最后一个 " Answer:" 之后的内容
-    key = " Answer:"
-    pos = text.rfind(key)
-    return "" if pos == -1 else text[pos + len(key):]
-
-def _count_words(s: str) -> int:
-    # 简单英文词计数（字母/数字/撇号）
-    return len(re.findall(r"[A-Za-z0-9']+", s))
-
-def generate_until_stop(tool, context: str, question: str,
-                        word_limit: int = 5,
-                        max_new_tokens: int = 20,
-                        do_sample: bool = False,
-                        temperature: float = 1.0,
-                        top_p: float = 1.0):
-    prompt = tool.build_prompt(context, question)
-    generated = ""
-
-    for _ in range(max_new_tokens):
-        next_id, next_txt = tool.generate_one_token(
-            prompt, do_sample=do_sample, temperature=temperature, top_p=top_p
-        )
-
-        # 1) eos / 特殊结束符
-        if tool.tokenizer.eos_token_id is not None and next_id == tool.tokenizer.eos_token_id:
-            break
-        if next_txt.strip() in {"<|eot_id|>", "<|endoftext|>", "</s>"}:
-            break
-
-        # 先把 token 接上
-        prompt += next_txt
-        generated += next_txt
-
-        # 2) 词数上限
-        ans = _extract_answer_span(prompt)
-        if _count_words(ans) >= word_limit:
-            # 如果最后一个 token 还是字母/数字，通常再给一个标点更自然；
-            # 你也可以直接 break，不再补标点
-            break
-
-        # 3) 换行或句末标点（且已有内容）
-        if next_txt == "\n" and _count_words(ans) > 0:
-            break
-        if next_txt.strip() in STOP_PUNCTS and _count_words(ans) > 0:
-            break
-
-    return {
-        "final_prompt": prompt,
-        "generated_answer": _extract_answer_span(prompt).strip()
-    }
-
 def loop_result(tool, device: str, prompt: str, word_limit: int = 800, results = []):
     init_enc = tool.tokenizer(prompt, return_tensors="pt")
     init_enc = {k: v.to(device) for k, v in init_enc.items()}
@@ -145,7 +88,7 @@ def main():
     print(f"{results_loop}\n")
     print(f"Final Prompt: {Prompt}\n")
     if args.save_json:
-        with open(f'/home/YiChen/uq/dev_fig/fig_statistic/llama_token_contributions_{args.metric}_loop.json', 'w') as f:
+        with open(args.save_json, 'w') as f:
             json.dump(results_loop, f, indent=2)
         print(f"\nSaved to: {args.save_json}")
 
