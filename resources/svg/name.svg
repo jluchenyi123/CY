@@ -34,7 +34,7 @@
 
     text {
       font-family: 'Arial Black', sans-serif;
-      font-size: 90px;
+      font-size: 60px;
       fill: url(#rainbow);
       stroke: #ffffff;
       stroke-width: 2px;
