@@ -3,10 +3,5 @@
 </h1>
 
 <div align="center">
-  <a href="https://open.spotify.com/track/0J7U24vlOOIeMpuaO6Q85A" target="_blank">
-    <img src="https://i.scdn.co/image/ab67616d0000b273ab99a285a0c2b9c4af1e35bb" 
-         alt="周杰伦 - 晴天" 
-         width="400"/>
-  </a>
+  [![Spotify Playlist](https://spotify-github-profile.vercel.app/api/view?uid=31k2rts6qwsp7rlavyg6e7tr2zx4&cover_image=true&theme=novatorem&show_offline=false&background_color=0d1117&bar_color=53b14f&bar_color_cover=false&playlist=4gQwPVxRr3MazXGU9zCQlU)](https://open.spotify.com/playlist/4gQwPVxRr3MazXGU9zCQlU)
 </div>
-
